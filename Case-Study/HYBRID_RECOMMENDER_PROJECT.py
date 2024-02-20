@@ -34,7 +34,7 @@ df = rating.merge(movie, how="left", on="movieId")
 comment_counts = pd.DataFrame(df["title"].value_counts())
 
 
-# Toplam oy kullanılma sayısı 1000'in altında olan filmlerin isimlerini rare_movies de tutuyoruz.
+# Toplam oy kullanılma sayısı 10000'in altında olan filmlerin isimlerini rare_movies de tutuyoruz.
 # Ve veri setinden çıkartıyoruz
 
 rare_movies = comment_counts[comment_counts["count"] <= 10000].index #10000'in altındaki izlenmeler(yorumlar)
@@ -156,13 +156,16 @@ top_users_ratings = top_users.merge(rating[["userId", "movieId", "rating"]], how
 
 # top_users_ratings = top_users_ratings[top_users_ratings["userId"] != random_user] #randomu buradan cıkardık
 
+# ilk 5 gelmezse neler yapılabilir? []
+
 
 #############################################
 # Görev 5: Weighted Average Recommendation Score'un Hesaplanması ve İlk 5 Filmin Tutulması
 #############################################
 
 # Adım 1: Her bir kullanıcının corr ve rating değerlerinin çarpımından oluşan weighted_rating adında yeni bir değişken oluşturunuz.
-top_users_ratings['weighted_rating'] = top_users_ratings['corr'] * top_users_ratings['rating']
+
+top_users_ratings['weighted_rating'] = top_users_ratings['corr'] * top_users_ratings['rating'] # bu aşama çok önemli
 
 # ratinge göre sıralarsak random da beğenebilir ama sadece rating i alırsak korelasyonu gözden kaçırırız ( korelasyonu aynı olduğunu varsaymış oluruz )
 # sadece korelasyona göre de alamayız cünkü bazı ratingler düşük
@@ -185,7 +188,6 @@ movies_to_be_recommend = recommendation_df[recommendation_df["weighted_rating"] 
 movie = pd.read_csv('datasets/movie_lens_dataset/movie.csv')
 movies_to_be_recommend.merge(movie[["movieId", "title"]]).head()
 
-
 #############################################
 # Adım 6: Item-Based Recommendation
 #############################################
@@ -204,27 +206,42 @@ df = rating.merge(movie, how="left", on="movieId")
 
 # Adım 2: Öneri yapılacak kullanıcının 5 puan verdiği filmlerden puanı en güncel olan filmin id'sinin alınız.
 
-user_info = df[df["userId"] == 108170]
+user = 108170
+movie_id = rating[(rating["userId"] == user) & (rating["rating"] == 5.0)].sort_values(by="timestamp", ascending=False)["movieId"][0:1].values[0]
 
-latest_watched = df[(df['userId'] == 108170) & (df['rating'] == 5)].sort_values(by='timestamp', ascending=False).drop_duplicates(subset='movieId')
-#birden fazla puan verme iht. karşı drop_duplicates yapıyoruz.
-
-most_latest_watched_id = latest_watched["movieId"].values[0]
-
-most_latest_movie_df = latest_watched.head(1)
+               ### YARDIM AL ###
 
 # Adım 3 :User based recommendation bölümünde oluşturulan user_movie_df dataframe’ini seçilen film id’sine göre filtreleyiniz.
-# 7044
+movie[movie["movieId"] == movie_id]["title"].values[0]
+movie_df = user_movie_df[movie[movie["movieId"] == movie_id]["title"].values[0]]
+movie_df
 
-user_movie_df_filtered = df[df['movieId'] == most_latest_watched_id]
-other_movies_df = df[df['movieId'] != most_latest_watched_id]
+user_movie_df[('rating', 'Wild at Heart (1990)')]
+
+user_movie_df.reset_index().head().columns[:4]
+user_movie_df.columns[:4]
+
+user_movie_df['rating', '10 Things I Hate About You (1999)']
+movie_df = user_movie_df[('rating', '12 Angry Men (1957)')]
 
 # Adım 4: Filtrelenen dataframe’i kullanarak seçili filmle diğer filmlerin korelasyonunu bulunuz ve sıralayınız.
+user_movie_df.corrwith(movie_df).sort_values(ascending=False).head(10)
 
+# Son iki adımı uygulayan fonksiyon
+def item_based_recommender(movie_name, user_movie_df):
+    movie = user_movie_df[movie_name]
+    return user_movie_df.corrwith(movie).sort_values(ascending=False).head(10)
 
 # Adım 5: Seçili film’in kendisi haricinde ilk 5 film’I öneri olarak veriniz.
+movies_from_item_based = item_based_recommender("12 Angry Men (1957)", user_movie_df)
+# 1'den 6'ya kadar. 0'da filmin kendisi var. Onu dışarda bıraktık.
+movies_from_item_based[1:6].index
 
 
-
-
+# 'My Science Project (1985)',
+# 'Mediterraneo (1991)',
+# 'Old Man and the Sea,
+# The (1958)',
+# 'National Lampoon's Senior Trip (1995)',
+# 'Clockwatchers (1997)']
 
