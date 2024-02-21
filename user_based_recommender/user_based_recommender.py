@@ -94,7 +94,7 @@ final_df = pd.concat([movies_watched_df[movies_watched_df.index.isin(users_same_
 
 # concat [izlenen filmlerin df'inde indexinde randomla aynı filmi izleyenleri ara ve randomun izlediği filmlerle birleştir ]
 
-final_df = final_df.drop_duplicates()
+final_df = final_df.drop_duplicates() # tekrarlanan satırları kaldır
 corr_df = final_df.T.corr().unstack().sort_values().drop_duplicates()
 
 corr_df = pd.DataFrame(corr_df, columns=["corr"])
