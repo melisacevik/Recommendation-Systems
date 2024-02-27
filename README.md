@@ -5,15 +5,15 @@ Bu repo, Tavsiye Sistemleri konuları üzerine yapılan konu anlatımlarını ve
 ## Eğitim İçerikleri
 
 1. **Association Rule Learning**
-   - [association_rule_learning.py](./https://github.com/melisacevik/Recommendation-Systems/blob/master/arl/arl.py)
+   - [association_rule_learning.py](https://github.com/melisacevik/Recommendation-Systems/blob/master/arl/arl.py)
      - Bu dosya, Association Rule Learning konusunu kapsamaktadır. Tavsiye sistemlerinde bu yöntemin nasıl kullanılabileceğini açıklar.
 
 2. **Item-Based Recommender**
-   - [item_based_recommender.py](./https://github.com/melisacevik/Recommendation-Systems/blob/master/item_based_recommender/item_based_recommender.py)
+   - [item_based_recommender.py](https://github.com/melisacevik/Recommendation-Systems/blob/master/item_based_recommender/item_based_recommender.py)
      - Bu dosya, Item-Based Recommender konusunu kapsamaktadır. Tavsiye sistemlerinde bu yöntemin nasıl uygulandığını açıklar.
 
 3. **Content-Based Recommender**
-   - [content_based_recommender.py](./https://github.com/melisacevik/Recommendation-Systems/blob/master/content_based_recommender/content_based_recommender.py)
+   - [content_based_recommender.py](https://github.com/melisacevik/Recommendation-Systems/blob/master/content_based_recommender/content_based_recommender.py)
      - Bu dosya, Content-Based Recommender konusunu kapsamaktadır. Tavsiye sistemlerinde içerik filtreleme yöntemlerinin nasıl uygulandığını açıklar.
 
 4. **User-Based Recommender**
